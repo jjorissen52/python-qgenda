@@ -12,9 +12,6 @@ except ImportError:
 with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
     long_description = readme.read()
 
-with open(os.path.join(os.path.dirname(__file__), 'requirements.txt')) as requirement_file:
-    requirements = [line.strip() for line in requirement_file.readlines() if not line.strip().startswith('#')]
-
 setup(
     name='python-qgenda',
     version=__version__,
@@ -34,7 +31,13 @@ setup(
         'qgenda.pipeline',
         'qgenda.tests'
     ],
-    install_requires=requirements,
+    install_requires=[
+        'certifi==2018.4.16',
+        'chardet==3.0.4',
+        'idna==2.7',
+        'requests==2.19.1',
+        'urllib3==1.23',
+    ],
     extras_require={
         'redis': [
             "redis==2.10.6",
