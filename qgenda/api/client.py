@@ -101,5 +101,68 @@ class QGendaClient:
         response = requests.get(schedule_url, params=params, headers=headers)
         return response
 
+    @pipelines.pre_execution_pipeline(pre.gzip_headers, pre.keep_authenticated, pre.prepare_odata(logger))
+    @pipelines.post_execution_pipeline(post.handle_error_response(logger))
+    def get_facility(self, odata_kwargs=None, headers=None):
+        facility_url = f'{self.api_url.strip("/")}/facility'
+        params = {'companyKey': self.company_key}
+        if odata_kwargs:
+            params.update(odata_kwargs)
+        headers = headers if headers else self.headers
+        response = requests.get(facility_url, params=params, headers=headers)
+        return response
+
+    @pipelines.pre_execution_pipeline(pre.gzip_headers, pre.keep_authenticated, pre.prepare_odata(logger))
+    @pipelines.post_execution_pipeline(post.handle_error_response(logger))
+    def get_organization(self, odata_kwargs=None, headers=None, organization_key=None):
+        if not organization_key:
+            raise APICallError('organization_key is a required argument.')
+        organization_url = f'{self.api_url.strip("/")}/organization'
+        params = {'OrganizationKey': organization_key}
+        if odata_kwargs:
+            params.update(odata_kwargs)
+        headers = headers if headers else self.headers
+        response = requests.get(organization_url, params=params, headers=headers)
+        return response
+
+    @pipelines.pre_execution_pipeline(pre.gzip_headers, pre.keep_authenticated, pre.prepare_odata(logger))
+    @pipelines.post_execution_pipeline(post.handle_error_response(logger))
+    def get_task(self, odata_kwargs=None, headers=None):
+        task_url = f'{self.api_url.strip("/")}/task'
+        params = {**odata_kwargs} if odata_kwargs else {}
+        headers = headers if headers else self.headers
+        response = requests.get(task_url, params=params, headers=headers)
+        return response
+
+    @pipelines.pre_execution_pipeline(pre.gzip_headers, pre.keep_authenticated, pre.prepare_odata(logger))
+    @pipelines.post_execution_pipeline(post.handle_error_response(logger))
+    def get_timeevent(self, start_date=None, end_date=None, odata_kwargs=None, headers=None):
+        timeevent_url = f'{self.api_url.strip("/")}/timeevent'
+        if not start_date:
+            raise APICallError('start_date is a required argument.')
+        params = {'startDate': start_date, 'companyKey': self.company_key}
+        if end_date:
+            params.update({"endDate": end_date})
+        if odata_kwargs:
+            params.update(odata_kwargs)
+        headers = headers if headers else self.headers
+        response = requests.get(timeevent_url, params=params, headers=headers)
+        return response
+
+    @pipelines.pre_execution_pipeline(pre.gzip_headers, pre.keep_authenticated, pre.prepare_odata(logger))
+    @pipelines.post_execution_pipeline(post.handle_error_response(logger))
+    def get_dailycase(self, start_date=None, end_date=None, odata_kwargs=None, headers=None):
+        dailycase_url = f'{self.api_url.strip("/")}/dailycase'
+        if not start_date:
+            raise APICallError('start_date is a required argument.')
+        params = {'startDate': start_date, 'companyKey': self.company_key}
+        if end_date:
+            params.update({"endDate": end_date})
+        if odata_kwargs:
+            params.update(odata_kwargs)
+        headers = headers if headers else self.headers
+        response = requests.get(dailycase_url, params=params, headers=headers)
+        return response
+
     def post_staff(self, *args, **kwargs):
         raise NotImplementedError('POST methods non-functional.')
