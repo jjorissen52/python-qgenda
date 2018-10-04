@@ -9,6 +9,7 @@ DEBUG = bool(os.environ.get('QGENDA_DEBUG'))
 if ENV_CONF_FILE:
     CONF_FILE = ENV_CONF_FILE
 else:
+    CONF_FILE = ''
     logging.warn('Please make sure you set the QGENDA_CONF_FILE '
                  'environment variable. API will not function without it.')
 CONF_REGION = ENV_CONF_REGION if ENV_CONF_REGION else 'qgenda'

@@ -28,11 +28,11 @@ setup(
     keywords=['QGenda', 'python api', 'python client'],
     license='Apache',
     packages=[
-        'qgenda_api',
-        'qgenda_api.api',
-        'qgenda_api.cache',
-        'qgenda_api.pipeline',
-        'qgenda_api.tests'
+        'qgenda',
+        'qgenda.api',
+        'qgenda.cache',
+        'qgenda.pipeline',
+        'qgenda.tests'
     ],
     install_requires=requirements,
     extras_require={
@@ -44,10 +44,9 @@ setup(
         ]
     },
     classifiers=[
-        'Development Status :: 1 - Development',
-        'Environment :: Scripting/Interactive',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
+        'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3.6',
     ]
