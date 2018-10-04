@@ -20,7 +20,7 @@ setup(
     version=__version__,
     description='Python client for QGenda REST API',
     long_description=long_description,
-    url='https://github.com/AmericanPhysicianPartners/qgenda_api',
+    url='https://github.com/jjorissen52/python-qgenda',
     author='JP Jorissen',
     author_email='jjorissen52@gmail.com',
     maintainer='JP Jorissen',
