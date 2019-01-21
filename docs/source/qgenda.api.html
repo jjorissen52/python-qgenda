@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>qgenda.api package &#8212; python-qgenda  documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          python-qgenda</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">Test</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">qgenda.api package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-qgenda.api.client">qgenda.api.client module</a></li>
+<li><a class="reference internal" href="#module-qgenda.api.exceptions">qgenda.api.exceptions module</a></li>
+<li><a class="reference internal" href="#module-qgenda.api">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../_sources/source/qgenda.api.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="qgenda-api-package">
+<h1>qgenda.api package<a class="headerlink" href="#qgenda-api-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-qgenda.api.client">
+<span id="qgenda-api-client-module"></span><h2>qgenda.api.client module<a class="headerlink" href="#module-qgenda.api.client" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="qgenda.api.client.QGendaClient">
+<em class="property">class </em><code class="descclassname">qgenda.api.client.</code><code class="descname">QGendaClient</code><span class="sig-paren">(</span><em>username=None</em>, <em>password=None</em>, <em>company_key=None</em>, <em>api_url='https://api.qgenda.com/'</em>, <em>api_version='v2'</em>, <em>headers=None</em>, <em>raise_errors=True</em>, <em>use_caching=False</em>, <em>leader=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/api/client.html#QGendaClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.api.client.QGendaClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>NOTE TO API DEVELOPERS: ALL ARGUMENTS FOR NEWLY IMPLEMENTED METHODS
+MUST BE GIVEN A DEFAULT OR THINGS WILL BE BROKEN.</p>
+<dl class="attribute">
+<dt id="qgenda.api.client.QGendaClient.auth_details">
+<code class="descname">auth_details</code><a class="headerlink" href="#qgenda.api.client.QGendaClient.auth_details" title="Permalink to this definition">¶</a></dt>
+<dd><p>getter for auth_details. used for maintaining local and shared state
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qgenda.api.client.QGendaClient.authenticate">
+<code class="descname">authenticate</code><span class="sig-paren">(</span><em>headers=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/api/client.html#QGendaClient.authenticate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.api.client.QGendaClient.authenticate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticate against their provider for an OAuth token.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raise_errors:</th><td class="field-body">(kwarg: True) Raise an error on authentication failure</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(dict) {“access_token:” &lt;jwt_access_token&gt;, “token_type”: &lt;token_type&gt;, “expires_in”: &lt;seconds&gt; }</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="qgenda.api.client.QGendaClient.get_dailycase">
+<code class="descname">get_dailycase</code><span class="sig-paren">(</span><em>start_date=None</em>, <em>end_date=None</em>, <em>odata_kwargs=None</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/api/client.html#QGendaClient.get_dailycase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.api.client.QGendaClient.get_dailycase" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qgenda.api.client.QGendaClient.get_facility">
+<code class="descname">get_facility</code><span class="sig-paren">(</span><em>odata_kwargs=None</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/api/client.html#QGendaClient.get_facility"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.api.client.QGendaClient.get_facility" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qgenda.api.client.QGendaClient.get_organization">
+<code class="descname">get_organization</code><span class="sig-paren">(</span><em>odata_kwargs=None</em>, <em>headers=None</em>, <em>organization_key=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/api/client.html#QGendaClient.get_organization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.api.client.QGendaClient.get_organization" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qgenda.api.client.QGendaClient.get_schedule">
+<code class="descname">get_schedule</code><span class="sig-paren">(</span><em>start_date=None</em>, <em>end_date=None</em>, <em>odata_kwargs=None</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/api/client.html#QGendaClient.get_schedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.api.client.QGendaClient.get_schedule" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qgenda.api.client.QGendaClient.get_staff">
+<code class="descname">get_staff</code><span class="sig-paren">(</span><em>odata_kwargs=None</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/api/client.html#QGendaClient.get_staff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.api.client.QGendaClient.get_staff" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qgenda.api.client.QGendaClient.get_task">
+<code class="descname">get_task</code><span class="sig-paren">(</span><em>odata_kwargs=None</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/api/client.html#QGendaClient.get_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.api.client.QGendaClient.get_task" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qgenda.api.client.QGendaClient.get_timeevent">
+<code class="descname">get_timeevent</code><span class="sig-paren">(</span><em>start_date=None</em>, <em>end_date=None</em>, <em>odata_kwargs=None</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/api/client.html#QGendaClient.get_timeevent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.api.client.QGendaClient.get_timeevent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qgenda.api.client.QGendaClient.post_staff">
+<code class="descname">post_staff</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/api/client.html#QGendaClient.post_staff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.api.client.QGendaClient.post_staff" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qgenda.api.client.QGendaClient.show_config">
+<code class="descname">show_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/api/client.html#QGendaClient.show_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.api.client.QGendaClient.show_config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="qgenda.api.client.QGendaClient.use_caching">
+<code class="descname">use_caching</code><em class="property"> = False</em><a class="headerlink" href="#qgenda.api.client.QGendaClient.use_caching" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-qgenda.api.exceptions">
+<span id="qgenda-api-exceptions-module"></span><h2>qgenda.api.exceptions module<a class="headerlink" href="#module-qgenda.api.exceptions" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="qgenda.api.exceptions.APICallError">
+<em class="property">exception </em><code class="descclassname">qgenda.api.exceptions.</code><code class="descname">APICallError</code><a class="reference internal" href="../_modules/qgenda/api/exceptions.html#APICallError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.api.exceptions.APICallError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseException</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="qgenda.api.exceptions.HTTPError">
+<em class="property">exception </em><code class="descclassname">qgenda.api.exceptions.</code><code class="descname">HTTPError</code><a class="reference internal" href="../_modules/qgenda/api/exceptions.html#HTTPError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.api.exceptions.HTTPError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseException</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="qgenda.api.exceptions.ImproperlyConfigured">
+<em class="property">exception </em><code class="descclassname">qgenda.api.exceptions.</code><code class="descname">ImproperlyConfigured</code><a class="reference internal" href="../_modules/qgenda/api/exceptions.html#ImproperlyConfigured"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.api.exceptions.ImproperlyConfigured" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseException</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-qgenda.api">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-qgenda.api" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2019, JP Jorissen.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

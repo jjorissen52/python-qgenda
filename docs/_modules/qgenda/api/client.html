@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>qgenda.api.client &#8212; python-qgenda  documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          python-qgenda</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Test</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <h1>Source code for qgenda.api.client</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="kn">from</span> <span class="nn">qgenda.pipeline</span> <span class="k">import</span> <span class="n">handlers</span><span class="p">,</span> <span class="n">pre</span><span class="p">,</span> <span class="n">pipelines</span><span class="p">,</span> <span class="n">post</span>
+<span class="kn">from</span> <span class="nn">qgenda.api.exceptions</span> <span class="k">import</span> <span class="n">APICallError</span>
+<span class="kn">from</span> <span class="nn">qgenda</span> <span class="k">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">qgenda.cache</span> <span class="k">import</span> <span class="n">cache</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="QGendaClient"><a class="viewcode-back" href="../../../source/qgenda.api.html#qgenda.api.client.QGendaClient">[docs]</a><span class="k">class</span> <span class="nc">QGendaClient</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    NOTE TO API DEVELOPERS: ALL ARGUMENTS FOR NEWLY IMPLEMENTED METHODS</span>
+<span class="sd">    MUST BE GIVEN A DEFAULT OR THINGS WILL BE BROKEN.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># have to set a default here or the auth_details getter will raise an error.</span>
+    <span class="n">use_caching</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">USE_CACHING</span>
+
+    <span class="nd">@handlers</span><span class="o">.</span><span class="n">log_bad_config</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">USERNAME</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">PASSWORD</span><span class="p">,</span> <span class="n">company_key</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">COMPANY_KEY</span><span class="p">,</span>
+                 <span class="n">api_url</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">API_URL</span><span class="p">,</span> <span class="n">api_version</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">API_VERSION</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">raise_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_caching</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">USE_CACHING</span><span class="p">,</span> <span class="n">leader</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">company_key</span> <span class="o">=</span> <span class="n">company_key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_url</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;{api_url.strip(&quot;/&quot;)}/{api_version.strip(&quot;/&quot;)}/&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_version</span> <span class="o">=</span> <span class="n">api_version</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raise_errors</span> <span class="o">=</span> <span class="n">raise_errors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auth_details</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span> <span class="k">if</span> <span class="n">headers</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="s1">&#39;user-agent&#39;</span><span class="p">:</span> <span class="n">f</span><span class="s1">&#39;python-qgenda </span><span class="si">{self.username}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/x-www-form-urlencoded&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Transfer-Encoding&#39;</span><span class="p">:</span> <span class="s1">&#39;gzip&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="c1"># list of methods that it is safe to include gzip headers for</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gzip_safe</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_caching</span> <span class="o">=</span> <span class="n">use_caching</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">leader</span> <span class="o">=</span> <span class="n">leader</span>
+
+<div class="viewcode-block" id="QGendaClient.show_config"><a class="viewcode-back" href="../../../source/qgenda.api.html#qgenda.api.client.QGendaClient.show_config">[docs]</a>    <span class="k">def</span> <span class="nf">show_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">company_key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_url</span><span class="p">,</span>
+              <span class="bp">self</span><span class="o">.</span><span class="n">raise_errors</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">auth_details</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_caching</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">auth_details</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        getter for auth_details. used for maintaining local and shared state</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_caching</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__auth_details</span>
+        <span class="n">auth_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__auth_details</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__auth_details</span> <span class="k">else</span> <span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;auth_details&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">{})</span>
+        <span class="k">return</span> <span class="n">auth_details</span>
+
+    <span class="nd">@auth_details</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">auth_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__auth_details</span> <span class="o">=</span> <span class="n">arg</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_caching</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;auth_details&#39;</span><span class="p">):</span>
+            <span class="n">cache</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;auth_details&#39;</span><span class="p">,</span> <span class="n">arg</span><span class="p">,</span> <span class="n">settings</span><span class="o">.</span><span class="n">CACHE_LIFETIME</span><span class="p">)</span>
+
+<div class="viewcode-block" id="QGendaClient.authenticate"><a class="viewcode-back" href="../../../source/qgenda.api.html#qgenda.api.client.QGendaClient.authenticate">[docs]</a>    <span class="nd">@pipelines</span><span class="o">.</span><span class="n">pre_execution_pipeline</span><span class="p">(</span><span class="n">pre</span><span class="o">.</span><span class="n">gzip_headers</span><span class="p">)</span>
+    <span class="nd">@pipelines</span><span class="o">.</span><span class="n">post_execution_pipeline</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">handle_login_response</span><span class="p">,</span> <span class="n">post</span><span class="o">.</span><span class="n">handle_error_response</span><span class="p">(</span><span class="n">logger</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Authenticate against their provider for an OAuth token.</span>
+
+<span class="sd">        :raise_errors: (kwarg: True) Raise an error on authentication failure</span>
+<span class="sd">        :return: (dict) {&quot;access_token:&quot; &lt;jwt_access_token&gt;, &quot;token_type&quot;: &lt;token_type&gt;, &quot;expires_in&quot;: &lt;seconds&gt; }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">login_url</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;{self.api_url.strip(&quot;/&quot;)}/login&#39;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
+            <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span> <span class="k">if</span> <span class="n">headers</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">login_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="QGendaClient.get_schedule"><a class="viewcode-back" href="../../../source/qgenda.api.html#qgenda.api.client.QGendaClient.get_schedule">[docs]</a>    <span class="nd">@pipelines</span><span class="o">.</span><span class="n">pre_execution_pipeline</span><span class="p">(</span><span class="n">pre</span><span class="o">.</span><span class="n">gzip_headers</span><span class="p">,</span> <span class="n">pre</span><span class="o">.</span><span class="n">keep_authenticated</span><span class="p">,</span> <span class="n">pre</span><span class="o">.</span><span class="n">prepare_odata</span><span class="p">(</span><span class="n">logger</span><span class="p">))</span>
+    <span class="nd">@pipelines</span><span class="o">.</span><span class="n">post_execution_pipeline</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">handle_error_response</span><span class="p">(</span><span class="n">logger</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">get_schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">odata_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">schedule_url</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;{self.api_url.strip(&quot;/&quot;)}/schedule&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">start_date</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">APICallError</span><span class="p">(</span><span class="s1">&#39;start_date is a required argument.&#39;</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;startDate&#39;</span><span class="p">:</span> <span class="n">start_date</span><span class="p">,</span> <span class="s1">&#39;companyKey&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">company_key</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">end_date</span><span class="p">:</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;endDate&quot;</span><span class="p">:</span> <span class="n">end_date</span><span class="p">})</span>
+        <span class="k">if</span> <span class="n">odata_kwargs</span><span class="p">:</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">odata_kwargs</span><span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span> <span class="k">if</span> <span class="n">headers</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">schedule_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="QGendaClient.get_staff"><a class="viewcode-back" href="../../../source/qgenda.api.html#qgenda.api.client.QGendaClient.get_staff">[docs]</a>    <span class="nd">@pipelines</span><span class="o">.</span><span class="n">pre_execution_pipeline</span><span class="p">(</span><span class="n">pre</span><span class="o">.</span><span class="n">gzip_headers</span><span class="p">,</span> <span class="n">pre</span><span class="o">.</span><span class="n">keep_authenticated</span><span class="p">,</span> <span class="n">pre</span><span class="o">.</span><span class="n">prepare_odata</span><span class="p">(</span><span class="n">logger</span><span class="p">))</span>
+    <span class="nd">@pipelines</span><span class="o">.</span><span class="n">post_execution_pipeline</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">handle_error_response</span><span class="p">(</span><span class="n">logger</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">get_staff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">odata_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">schedule_url</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;{self.api_url.strip(&quot;/&quot;)}/staffmember&#39;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">odata_kwargs</span><span class="p">}</span> <span class="k">if</span> <span class="n">odata_kwargs</span> <span class="k">else</span> <span class="p">{}</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span> <span class="k">if</span> <span class="n">headers</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">schedule_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="QGendaClient.get_facility"><a class="viewcode-back" href="../../../source/qgenda.api.html#qgenda.api.client.QGendaClient.get_facility">[docs]</a>    <span class="nd">@pipelines</span><span class="o">.</span><span class="n">pre_execution_pipeline</span><span class="p">(</span><span class="n">pre</span><span class="o">.</span><span class="n">gzip_headers</span><span class="p">,</span> <span class="n">pre</span><span class="o">.</span><span class="n">keep_authenticated</span><span class="p">,</span> <span class="n">pre</span><span class="o">.</span><span class="n">prepare_odata</span><span class="p">(</span><span class="n">logger</span><span class="p">))</span>
+    <span class="nd">@pipelines</span><span class="o">.</span><span class="n">post_execution_pipeline</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">handle_error_response</span><span class="p">(</span><span class="n">logger</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">get_facility</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">odata_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">facility_url</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;{self.api_url.strip(&quot;/&quot;)}/facility&#39;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;companyKey&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">company_key</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">odata_kwargs</span><span class="p">:</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">odata_kwargs</span><span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span> <span class="k">if</span> <span class="n">headers</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">facility_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="QGendaClient.get_organization"><a class="viewcode-back" href="../../../source/qgenda.api.html#qgenda.api.client.QGendaClient.get_organization">[docs]</a>    <span class="nd">@pipelines</span><span class="o">.</span><span class="n">pre_execution_pipeline</span><span class="p">(</span><span class="n">pre</span><span class="o">.</span><span class="n">gzip_headers</span><span class="p">,</span> <span class="n">pre</span><span class="o">.</span><span class="n">keep_authenticated</span><span class="p">,</span> <span class="n">pre</span><span class="o">.</span><span class="n">prepare_odata</span><span class="p">(</span><span class="n">logger</span><span class="p">))</span>
+    <span class="nd">@pipelines</span><span class="o">.</span><span class="n">post_execution_pipeline</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">handle_error_response</span><span class="p">(</span><span class="n">logger</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">get_organization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">odata_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">organization_key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">organization_key</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">APICallError</span><span class="p">(</span><span class="s1">&#39;organization_key is a required argument.&#39;</span><span class="p">)</span>
+        <span class="n">organization_url</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;{self.api_url.strip(&quot;/&quot;)}/organization&#39;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;OrganizationKey&#39;</span><span class="p">:</span> <span class="n">organization_key</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">odata_kwargs</span><span class="p">:</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">odata_kwargs</span><span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span> <span class="k">if</span> <span class="n">headers</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">organization_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="QGendaClient.get_task"><a class="viewcode-back" href="../../../source/qgenda.api.html#qgenda.api.client.QGendaClient.get_task">[docs]</a>    <span class="nd">@pipelines</span><span class="o">.</span><span class="n">pre_execution_pipeline</span><span class="p">(</span><span class="n">pre</span><span class="o">.</span><span class="n">gzip_headers</span><span class="p">,</span> <span class="n">pre</span><span class="o">.</span><span class="n">keep_authenticated</span><span class="p">,</span> <span class="n">pre</span><span class="o">.</span><span class="n">prepare_odata</span><span class="p">(</span><span class="n">logger</span><span class="p">))</span>
+    <span class="nd">@pipelines</span><span class="o">.</span><span class="n">post_execution_pipeline</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">handle_error_response</span><span class="p">(</span><span class="n">logger</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">get_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">odata_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">task_url</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;{self.api_url.strip(&quot;/&quot;)}/task&#39;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">odata_kwargs</span><span class="p">}</span> <span class="k">if</span> <span class="n">odata_kwargs</span> <span class="k">else</span> <span class="p">{}</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span> <span class="k">if</span> <span class="n">headers</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">task_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="QGendaClient.get_timeevent"><a class="viewcode-back" href="../../../source/qgenda.api.html#qgenda.api.client.QGendaClient.get_timeevent">[docs]</a>    <span class="nd">@pipelines</span><span class="o">.</span><span class="n">pre_execution_pipeline</span><span class="p">(</span><span class="n">pre</span><span class="o">.</span><span class="n">gzip_headers</span><span class="p">,</span> <span class="n">pre</span><span class="o">.</span><span class="n">keep_authenticated</span><span class="p">,</span> <span class="n">pre</span><span class="o">.</span><span class="n">prepare_odata</span><span class="p">(</span><span class="n">logger</span><span class="p">))</span>
+    <span class="nd">@pipelines</span><span class="o">.</span><span class="n">post_execution_pipeline</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">handle_error_response</span><span class="p">(</span><span class="n">logger</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">get_timeevent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">odata_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">timeevent_url</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;{self.api_url.strip(&quot;/&quot;)}/timeevent&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">start_date</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">APICallError</span><span class="p">(</span><span class="s1">&#39;start_date is a required argument.&#39;</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;startDate&#39;</span><span class="p">:</span> <span class="n">start_date</span><span class="p">,</span> <span class="s1">&#39;companyKey&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">company_key</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">end_date</span><span class="p">:</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;endDate&quot;</span><span class="p">:</span> <span class="n">end_date</span><span class="p">})</span>
+        <span class="k">if</span> <span class="n">odata_kwargs</span><span class="p">:</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">odata_kwargs</span><span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span> <span class="k">if</span> <span class="n">headers</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">timeevent_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="QGendaClient.get_dailycase"><a class="viewcode-back" href="../../../source/qgenda.api.html#qgenda.api.client.QGendaClient.get_dailycase">[docs]</a>    <span class="nd">@pipelines</span><span class="o">.</span><span class="n">pre_execution_pipeline</span><span class="p">(</span><span class="n">pre</span><span class="o">.</span><span class="n">gzip_headers</span><span class="p">,</span> <span class="n">pre</span><span class="o">.</span><span class="n">keep_authenticated</span><span class="p">,</span> <span class="n">pre</span><span class="o">.</span><span class="n">prepare_odata</span><span class="p">(</span><span class="n">logger</span><span class="p">))</span>
+    <span class="nd">@pipelines</span><span class="o">.</span><span class="n">post_execution_pipeline</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">handle_error_response</span><span class="p">(</span><span class="n">logger</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">get_dailycase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">odata_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">dailycase_url</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;{self.api_url.strip(&quot;/&quot;)}/dailycase&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">start_date</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">APICallError</span><span class="p">(</span><span class="s1">&#39;start_date is a required argument.&#39;</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;startDate&#39;</span><span class="p">:</span> <span class="n">start_date</span><span class="p">,</span> <span class="s1">&#39;companyKey&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">company_key</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">end_date</span><span class="p">:</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;endDate&quot;</span><span class="p">:</span> <span class="n">end_date</span><span class="p">})</span>
+        <span class="k">if</span> <span class="n">odata_kwargs</span><span class="p">:</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">odata_kwargs</span><span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span> <span class="k">if</span> <span class="n">headers</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">dailycase_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="QGendaClient.post_staff"><a class="viewcode-back" href="../../../source/qgenda.api.html#qgenda.api.client.QGendaClient.post_staff">[docs]</a>    <span class="k">def</span> <span class="nf">post_staff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;POST methods non-functional.&#39;</span><span class="p">)</span></div></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2019, JP Jorissen.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
