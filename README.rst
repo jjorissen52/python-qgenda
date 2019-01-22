@@ -36,6 +36,13 @@ you like automatic authentication and authentication storage.
 Only GET methods are implemented, so if you need to update/delete, you will have to extend the API to do so.
 Official QGenda API documentation can be found `here <http://restapi.qgenda.com>`__.
 
+Installation
+-------------
+
+..  code:: bash
+
+    pip install python-qgenda
+
 Setup
 ------
 You will need to have an API account for QGenda for any of this stuff to work, of course. You will
