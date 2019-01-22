@@ -9,7 +9,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
-with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
+with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
     long_description = readme.read()
 
 setup(
@@ -32,14 +32,14 @@ setup(
         'qgenda.tests'
     ],
     install_requires=[
-        'requests==2.19.1',
+        'requests',
     ],
     extras_require={
         'redis': [
-            "redis==2.10.6",
+            "redis",
         ],
         'memcache': [
-            "python-memcached==1.59"
+            "python-memcached"
         ]
     },
     classifiers=[

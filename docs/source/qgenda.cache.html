@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>qgenda.cache package &#8212; python-qgenda  documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          python-qgenda</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#overview">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#setup">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#simple-usage">Simple Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#advanced">Advanced</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">qgenda.cache package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-qgenda.cache.memcache">qgenda.cache.memcache module</a></li>
+<li><a class="reference internal" href="#module-qgenda.cache.mock">qgenda.cache.mock module</a></li>
+<li><a class="reference internal" href="#module-qgenda.cache.redis">qgenda.cache.redis module</a></li>
+<li><a class="reference internal" href="#module-qgenda.cache">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../_sources/source/qgenda.cache.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="qgenda-cache-package">
+<h1>qgenda.cache package<a class="headerlink" href="#qgenda-cache-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-qgenda.cache.memcache">
+<span id="qgenda-cache-memcache-module"></span><h2>qgenda.cache.memcache module<a class="headerlink" href="#module-qgenda.cache.memcache" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="qgenda.cache.memcache.MemCache">
+<em class="property">class </em><code class="descclassname">qgenda.cache.memcache.</code><code class="descname">MemCache</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/cache/memcache.html#MemCache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.cache.memcache.MemCache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">memcache.Client</span></code></p>
+<dl class="method">
+<dt id="qgenda.cache.memcache.MemCache.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/cache/memcache.html#MemCache.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.cache.memcache.MemCache.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qgenda.cache.memcache.MemCache.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>key=None</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/cache/memcache.html#MemCache.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.cache.memcache.MemCache.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves a key from the memcache.</p>
+<p>&#64;return: The value or None.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qgenda.cache.memcache.MemCache.set">
+<code class="descname">set</code><span class="sig-paren">(</span><em>key=None</em>, <em>obj=None</em>, <em>expiration_seconds=3600</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/cache/memcache.html#MemCache.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.cache.memcache.MemCache.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unconditionally sets a key to a given value in the memcache.</p>
+<p>The C{key} can optionally be an tuple, with the first element
+being the server hash value and the second being the key.  If
+you want to avoid making this module calculate a hash value.
+You may prefer, for example, to keep all of a given user’s
+objects on the same memcache server, so you could use the
+user’s unique id as the hash value.</p>
+<p>&#64;return: Nonzero on success.
+&#64;rtype: int</p>
+<p>&#64;param time: Tells memcached the time which this value should
+expire, either as a delta number of seconds, or an absolute
+unix time-since-the-epoch value. See the memcached protocol
+docs section “Storage Commands” for more info on &lt;exptime&gt;. We
+default to 0 == cache forever.</p>
+<p>&#64;param min_compress_len: The threshold length to kick in
+auto-compression of the value using the compressor
+routine. If the value being cached is a string, then the
+length of the string is measured, else if the value is an
+object, then the length of the pickle result is measured. If
+the resulting attempt at compression yields a larger string
+than the input, then it is discarded. For backwards
+compatibility, this parameter defaults to 0, indicating don’t
+ever try to compress.</p>
+<p>&#64;param noreply: optional parameter instructs the server to not
+send the reply.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-qgenda.cache.mock">
+<span id="qgenda-cache-mock-module"></span><h2>qgenda.cache.mock module<a class="headerlink" href="#module-qgenda.cache.mock" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="qgenda.cache.mock.MockCache">
+<em class="property">class </em><code class="descclassname">qgenda.cache.mock.</code><code class="descname">MockCache</code><span class="sig-paren">(</span><em>debug=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/cache/mock.html#MockCache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.cache.mock.MockCache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="staticmethod">
+<dt id="qgenda.cache.mock.MockCache.clear">
+<em class="property">static </em><code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/cache/mock.html#MockCache.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.cache.mock.MockCache.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qgenda.cache.mock.MockCache.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>key=None</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/cache/mock.html#MockCache.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.cache.mock.MockCache.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="qgenda.cache.mock.MockCache.set">
+<em class="property">static </em><code class="descname">set</code><span class="sig-paren">(</span><em>key=None</em>, <em>obj=None</em>, <em>expiration_seconds=3600</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/cache/mock.html#MockCache.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.cache.mock.MockCache.set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-qgenda.cache.redis">
+<span id="qgenda-cache-redis-module"></span><h2>qgenda.cache.redis module<a class="headerlink" href="#module-qgenda.cache.redis" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="qgenda.cache.redis.RedisCache">
+<em class="property">class </em><code class="descclassname">qgenda.cache.redis.</code><code class="descname">RedisCache</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/cache/redis.html#RedisCache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.cache.redis.RedisCache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">redis.client.Redis</span></code></p>
+<dl class="method">
+<dt id="qgenda.cache.redis.RedisCache.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/cache/redis.html#RedisCache.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.cache.redis.RedisCache.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qgenda.cache.redis.RedisCache.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>key=None</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/cache/redis.html#RedisCache.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.cache.redis.RedisCache.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the value at key <code class="docutils literal notranslate"><span class="pre">name</span></code>, or None if the key doesn’t exist</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qgenda.cache.redis.RedisCache.set">
+<code class="descname">set</code><span class="sig-paren">(</span><em>key=None</em>, <em>obj=None</em>, <em>expiration_seconds=3600</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/cache/redis.html#RedisCache.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.cache.redis.RedisCache.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the value at key <code class="docutils literal notranslate"><span class="pre">name</span></code> to <code class="docutils literal notranslate"><span class="pre">value</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">ex</span></code> sets an expire flag on key <code class="docutils literal notranslate"><span class="pre">name</span></code> for <code class="docutils literal notranslate"><span class="pre">ex</span></code> seconds.</p>
+<p><code class="docutils literal notranslate"><span class="pre">px</span></code> sets an expire flag on key <code class="docutils literal notranslate"><span class="pre">name</span></code> for <code class="docutils literal notranslate"><span class="pre">px</span></code> milliseconds.</p>
+<dl class="docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">nx</span></code> if set to True, set the value at key <code class="docutils literal notranslate"><span class="pre">name</span></code> to <code class="docutils literal notranslate"><span class="pre">value</span></code> only</dt>
+<dd>if it does not exist.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">xx</span></code> if set to True, set the value at key <code class="docutils literal notranslate"><span class="pre">name</span></code> to <code class="docutils literal notranslate"><span class="pre">value</span></code> only</dt>
+<dd>if it already exists.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-qgenda.cache">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-qgenda.cache" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2019, JP Jorissen.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
