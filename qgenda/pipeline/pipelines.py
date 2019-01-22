@@ -24,7 +24,7 @@ class pre_execution_pipeline:
             if cached_response:
                 return cached_response
             caller_name = method.__name__
-            # need to save caller so the pos_execution pipline can get access.
+            # need to save caller so the pos_execution pipeline can get access.
             if not getattr(self, 'caller', None):
                 setattr(self, 'caller', method)
             for pipline_func in self.pipeline_functions:
