@@ -189,7 +189,7 @@ Advanced
 
 Caching Authentication
 +++++++++++++++++++++++
-The client saves its saved authentication token in cache so you don't need to re-authenticate between instances unless your token
+The client saves its authentication token in cache so you don't need to re-authenticate between instances unless your token
 expires. redis and python-memcached are currently the only supported cache backends. Using the below configuration
 
 Redis

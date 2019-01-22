@@ -58,6 +58,7 @@
 <li class="toctree-l1"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#setup">Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#simple-usage">Simple Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#advanced">Advanced</a></li>
 </ul>
 </ul>
 </li>
@@ -82,6 +83,14 @@
 <li><a class="reference internal" href="#qgendaclient-get-facility">QGendaClient.get_facility</a></li>
 <li><a class="reference internal" href="#qgendaclient-get-timeevent">QGendaClient.get_timeevent</a></li>
 <li><a class="reference internal" href="#qgendaclient-get-dailycase">QGendaClient.get_dailycase</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#advanced">Advanced</a><ul>
+<li><a class="reference internal" href="#caching-authentication">Caching Authentication</a><ul>
+<li><a class="reference internal" href="#redis">Redis</a></li>
+<li><a class="reference internal" href="#memcached">Memcached</a></li>
 </ul>
 </li>
 </ul>
@@ -160,7 +169,7 @@
 <div class="section" id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
 <p>Python QGenda is a client library to interact with QGenda’s REST API. It provides some nice things out of the box for
-you like response caching (if you want it) and automatic authentication.</p>
+you like automatic authentication and authentication storage.</p>
 <p>Only GET methods are implemented, so if you need to update/delete, you will have to extend the API to do so.
 Official QGenda API documentation can be found <a class="reference external" href="http://restapi.qgenda.com">here</a>.</p>
 </div>
@@ -195,7 +204,11 @@ want to have a config file that looks something like this:</p>
 automatically so you don’t need to worry about it after you know your credentials work.</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 
+<span class="c1"># tell configparser where to look for config</span>
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;QGENDA_CONF_FILE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;/path/to/qgenda.conf&#39;</span>
+<span class="c1"># optional</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;QGENDA_CONF_REGION&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;name_of_region&#39;</span> <span class="c1"># defaults to qgenda</span>
+
 <span class="kn">from</span> <span class="nn">qgenda.api</span> <span class="k">import</span> <span class="n">client</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">QGendaClient</span><span class="p">()</span>
 <span class="n">client</span><span class="o">.</span><span class="n">authenticate</span><span class="p">()</span>
@@ -301,6 +314,64 @@ Request response. You may need to keep that in mind as you work with the API.</p
 <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response_dict</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
 </pre></div>
 </div>
+</div>
+</div>
+</div>
+<div class="section" id="advanced">
+<h1>Advanced<a class="headerlink" href="#advanced" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="caching-authentication">
+<h2>Caching Authentication<a class="headerlink" href="#caching-authentication" title="Permalink to this headline">¶</a></h2>
+<p>The client saves its authentication token in cache so you don’t need to re-authenticate between instances unless your token
+expires. redis and python-memcached are currently the only supported cache backends. Using the below configuration</p>
+<div class="section" id="redis">
+<h3>Redis<a class="headerlink" href="#redis" title="Permalink to this headline">¶</a></h3>
+<p>You need to install redis in your environment and run a redis server.</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">redis</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Config</dt>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">qgenda</span><span class="p">]</span>
+<span class="n">company_key</span> <span class="o">=</span> <span class="n">YOUR</span><span class="o">-</span><span class="n">COMPANY</span><span class="o">-</span><span class="n">KEY</span>
+<span class="n">username</span> <span class="o">=</span> <span class="n">API</span><span class="o">-</span><span class="n">USERNAME</span>
+<span class="n">password</span> <span class="o">=</span> <span class="n">API</span><span class="o">-</span><span class="n">PASSWORD</span>
+<span class="n">api_url</span> <span class="o">=</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">api</span><span class="o">.</span><span class="n">qgenda</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>
+<span class="n">documentation</span> <span class="o">=</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">restapi</span><span class="o">.</span><span class="n">qgenda</span><span class="o">.</span><span class="n">com</span>
+<span class="n">api_version</span> <span class="o">=</span> <span class="n">v2</span>
+<span class="n">cache_backend</span> <span class="o">=</span> <span class="n">redis</span>
+<span class="n">cache_host</span> <span class="o">=</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span>
+<span class="n">cache_port</span> <span class="o">=</span> <span class="mi">6379</span>
+<span class="n">cache_lifetime</span> <span class="o">=</span> <span class="mi">600</span> <span class="p">;</span> <span class="ow">in</span> <span class="n">seconds</span>
+<span class="n">debug</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="memcached">
+<h3>Memcached<a class="headerlink" href="#memcached" title="Permalink to this headline">¶</a></h3>
+<p>You need to install python-memecached in your environment and run a memcached server.</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">memcached</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Config</dt>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">qgenda</span><span class="p">]</span>
+<span class="n">company_key</span> <span class="o">=</span> <span class="n">YOUR</span><span class="o">-</span><span class="n">COMPANY</span><span class="o">-</span><span class="n">KEY</span>
+<span class="n">username</span> <span class="o">=</span> <span class="n">API</span><span class="o">-</span><span class="n">USERNAME</span>
+<span class="n">password</span> <span class="o">=</span> <span class="n">API</span><span class="o">-</span><span class="n">PASSWORD</span>
+<span class="n">api_url</span> <span class="o">=</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">api</span><span class="o">.</span><span class="n">qgenda</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>
+<span class="n">documentation</span> <span class="o">=</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">restapi</span><span class="o">.</span><span class="n">qgenda</span><span class="o">.</span><span class="n">com</span>
+<span class="n">api_version</span> <span class="o">=</span> <span class="n">v2</span>
+<span class="n">cache_backend</span> <span class="o">=</span> <span class="n">memcached</span>
+<span class="n">cache_host</span> <span class="o">=</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span>
+<span class="n">cache_port</span> <span class="o">=</span> <span class="mi">11211</span>
+<span class="n">cache_lifetime</span> <span class="o">=</span> <span class="mi">600</span> <span class="p">;</span> <span class="ow">in</span> <span class="n">seconds</span>
+<span class="n">debug</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</dd>
+</dl>
 </div>
 </div>
 </div>

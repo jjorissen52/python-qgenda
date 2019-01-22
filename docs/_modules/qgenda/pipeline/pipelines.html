@@ -57,6 +57,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../readme.html#overview">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../readme.html#setup">Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../readme.html#simple-usage">Simple Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#advanced">Advanced</a></li>
 </ul>
 </ul>
 </li>
@@ -130,7 +131,7 @@
             <span class="k">if</span> <span class="n">cached_response</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">cached_response</span>
             <span class="n">caller_name</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="vm">__name__</span>
-            <span class="c1"># need to save caller so the pos_execution pipline can get access.</span>
+            <span class="c1"># need to save caller so the pos_execution pipeline can get access.</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;caller&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
                 <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;caller&#39;</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">pipline_func</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_functions</span><span class="p">:</span>

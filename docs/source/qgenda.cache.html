@@ -57,6 +57,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../readme.html#overview">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../readme.html#setup">Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../readme.html#simple-usage">Simple Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html#advanced">Advanced</a></li>
 </ul>
 </ul>
 </li>
@@ -72,7 +73,7 @@
       aria-labelledby="dLabelLocalToc"><ul>
 <li><a class="reference internal" href="#">qgenda.cache package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#qgenda-cache-memcache-module">qgenda.cache.memcache module</a></li>
+<li><a class="reference internal" href="#module-qgenda.cache.memcache">qgenda.cache.memcache module</a></li>
 <li><a class="reference internal" href="#module-qgenda.cache.mock">qgenda.cache.mock module</a></li>
 <li><a class="reference internal" href="#module-qgenda.cache.redis">qgenda.cache.redis module</a></li>
 <li><a class="reference internal" href="#module-qgenda.cache">Module contents</a></li>
@@ -122,8 +123,56 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="qgenda-cache-memcache-module">
-<h2>qgenda.cache.memcache module<a class="headerlink" href="#qgenda-cache-memcache-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-qgenda.cache.memcache">
+<span id="qgenda-cache-memcache-module"></span><h2>qgenda.cache.memcache module<a class="headerlink" href="#module-qgenda.cache.memcache" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="qgenda.cache.memcache.MemCache">
+<em class="property">class </em><code class="descclassname">qgenda.cache.memcache.</code><code class="descname">MemCache</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/cache/memcache.html#MemCache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.cache.memcache.MemCache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">memcache.Client</span></code></p>
+<dl class="method">
+<dt id="qgenda.cache.memcache.MemCache.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/cache/memcache.html#MemCache.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.cache.memcache.MemCache.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qgenda.cache.memcache.MemCache.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>key=None</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/cache/memcache.html#MemCache.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.cache.memcache.MemCache.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves a key from the memcache.</p>
+<p>&#64;return: The value or None.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qgenda.cache.memcache.MemCache.set">
+<code class="descname">set</code><span class="sig-paren">(</span><em>key=None</em>, <em>obj=None</em>, <em>expiration_seconds=3600</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qgenda/cache/memcache.html#MemCache.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qgenda.cache.memcache.MemCache.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unconditionally sets a key to a given value in the memcache.</p>
+<p>The C{key} can optionally be an tuple, with the first element
+being the server hash value and the second being the key.  If
+you want to avoid making this module calculate a hash value.
+You may prefer, for example, to keep all of a given user’s
+objects on the same memcache server, so you could use the
+user’s unique id as the hash value.</p>
+<p>&#64;return: Nonzero on success.
+&#64;rtype: int</p>
+<p>&#64;param time: Tells memcached the time which this value should
+expire, either as a delta number of seconds, or an absolute
+unix time-since-the-epoch value. See the memcached protocol
+docs section “Storage Commands” for more info on &lt;exptime&gt;. We
+default to 0 == cache forever.</p>
+<p>&#64;param min_compress_len: The threshold length to kick in
+auto-compression of the value using the compressor
+routine. If the value being cached is a string, then the
+length of the string is measured, else if the value is an
+object, then the length of the pickle result is measured. If
+the resulting attempt at compression yields a larger string
+than the input, then it is discarded. For backwards
+compatibility, this parameter defaults to 0, indicating don’t
+ever try to compress.</p>
+<p>&#64;param noreply: optional parameter instructs the server to not
+send the reply.</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-qgenda.cache.mock">
 <span id="qgenda-cache-mock-module"></span><h2>qgenda.cache.mock module<a class="headerlink" href="#module-qgenda.cache.mock" title="Permalink to this headline">¶</a></h2>
