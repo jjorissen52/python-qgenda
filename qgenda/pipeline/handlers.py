@@ -3,9 +3,6 @@ from qgenda import helpers, settings
 from qgenda.api.exceptions import ImproperlyConfigured
 
 
-
-
-
 def log_bad_config(logger):
     """
     Logs with level ERROR to the passed logger about missing keys

@@ -1,0 +1,7 @@
+qgenda
+===========
+
+.. toctree::
+   :maxdepth: 6
+
+   qgendar
