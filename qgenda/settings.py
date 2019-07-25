@@ -34,7 +34,7 @@ def read_config(keys):
     :param keys: (iterable) default keys to set to None
     :return:
     """
-    config = configparser.ConfigParser(defaults=DEFAULTS)
+    config = configparser.ConfigParser(defaults=DEFAULTS, allow_no_value=True)
     config.read(CONF_FILE)
     if not config.has_section(CONF_REGION):
         config.add_section(CONF_REGION)
