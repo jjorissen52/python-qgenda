@@ -32,6 +32,7 @@ class QGendaClient:
             'user-agent': f'python-qgenda {self.username}',
             'Content-Type': 'application/x-www-form-urlencoded',
             'Transfer-Encoding': 'gzip',
+            'Accept-Encoding': 'gzip',
         }
         # list of methods that it is safe to include gzip headers for
         self.gzip_safe = []
