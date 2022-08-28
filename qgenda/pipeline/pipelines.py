@@ -35,19 +35,18 @@ class pre_execution_pipeline(pipeline):
             cached_response = cache.get(request_key) if client_obj.use_caching else None
             if cached_response:
                 return cached_response
-            caller_name = method.__name__
             # need to save caller so the pos_execution pipeline can get access.
             if not getattr(self, 'caller', None):
                 setattr(self, 'caller', method)
             for pipline_func in self.pipeline_functions:
-                client_obj, caller_name, params = pipline_func(client_obj, caller_name, params)
+                client_obj, params = pipline_func(client_obj, method, params)
             # storing execution params and cache key on client for use by post_execution_pipeline
             setattr(client_obj, 'latest_execution_params', {**params})
             return method(client_obj, **params)
         return decorated
 
 
-class post_execution_pipeline:
+class post_execution_pipeline(pipeline):
     """
     object pass in __call__ will either be a method or a pre-execution pipeline.
     """

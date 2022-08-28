@@ -3,16 +3,16 @@ import time
 from qgenda import helpers
 
 
-def gzip_headers(method_self, caller=None, params=None):
-    if caller not in method_self.gzip_safe:
+def gzip_headers(method_self, method=None, params=None):
+    if method.__name__ not in method_self.gzip_safe:
         use_gzip = params.pop('gzip', False)
         params['headers'] = method_self.headers if use_gzip else {
             key: value for key, value in method_self.headers.items() if value != 'gzip'
         }
-    return method_self, caller, params
+    return method_self, params
 
 
-def keep_authenticated(method_self, caller=None, params=None):
+def keep_authenticated(method_self, method=None, params=None):
     """
 
     """
@@ -34,13 +34,14 @@ def keep_authenticated(method_self, caller=None, params=None):
     if "access_token" in auth_details:
         method_self.headers.update({"Authorization": f'bearer {auth_details["access_token"]}'})
         params['headers'].update({"Authorization": f'bearer {auth_details["access_token"]}'})
-    return method_self, caller, params
+    return method_self, params
+
 
 
 def prepare_odata(logger):
     odata_filters = ['$filter', '$select', '$orderby']
 
-    def real_decorator(method_self, caller, params):
+    def real_decorator(method_self, method, params):
         odata_kwargs = params.get('odata_kwargs', {})
         extra = []
         if odata_kwargs:
@@ -50,5 +51,5 @@ def prepare_odata(logger):
                 odata_kwargs.pop(e)
             logger.warning(f'Extra OData filter(s) removed from kwargs. Invalid filter {extra}')
         params['odata_kwargs'] = odata_kwargs
-        return method_self, caller, params
+        return method_self, params
     return real_decorator
