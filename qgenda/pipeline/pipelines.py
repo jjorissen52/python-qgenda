@@ -6,7 +6,17 @@ from qgenda.cache import cache
 from qgenda.settings import CACHE_LIFETIME
 
 
-class pre_execution_pipeline:
+class pipeline:
+    def __call__(self, method):
+        # so we have access to the original arguments from the function definition
+        method._original_arg_names = getattr(
+            method,
+            '_original_arg_names',
+            {*helpers.get_arg_names(method)}
+        )
+
+
+class pre_execution_pipeline(pipeline):
 
     def __init__(self, *pipline_functions):
         self.pipeline_functions = pipline_functions
@@ -15,6 +25,8 @@ class pre_execution_pipeline:
             assert 'pipeline.pre' in module, f'{pipeline.__name__} must be in qgenda_api.pipeline.pre'
 
     def __call__(self, method):
+        super().__call__(method)
+
         @functools.wraps(method)
         def decorated(client_obj, *args, **kwargs):
             params = helpers.named_method_params(method, args, kwargs)
@@ -47,6 +59,8 @@ class post_execution_pipeline:
             assert 'pipeline.post' in module, f'{pipeline.__name__} must be in qgenda_api.pipeline.post'
 
     def __call__(self, method):
+        super().__call__(method)
+
         @functools.wraps(method)
         def decorated(client_self, *args, **kwargs):
             request_key = client_self.latest_request_key
