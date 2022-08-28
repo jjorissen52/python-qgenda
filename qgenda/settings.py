@@ -2,6 +2,8 @@ import configparser
 import os
 import logging
 
+logger = logging.getLogger(__name__)
+
 PROJECT_DIR = os.path.dirname(os.path.dirname(__file__))
 ENV_CONF_FILE = os.environ.get('QGENDA_CONF_FILE')
 ENV_CONF_REGION = os.environ.get('QGENDA_CONF_REGION')
@@ -10,7 +12,7 @@ if ENV_CONF_FILE:
     CONF_FILE = ENV_CONF_FILE
 else:
     CONF_FILE = ''
-    logging.warn('Please make sure you set the QGENDA_CONF_FILE '
+    logger.warning('Please make sure you set the QGENDA_CONF_FILE '
                  'environment variable. API will not function without it.')
 CONF_REGION = ENV_CONF_REGION if ENV_CONF_REGION else 'qgenda'
 DEFAULTS = {
@@ -24,6 +26,8 @@ DEFAULTS = {
     'cache_port': None,
     'cache_lifetime': 0,
     'debug': DEBUG,
+    'get_schedule_params': 'sinceModifiedTimestamp,includeDeletes',
+    # the rest . . .
 }
 
 
@@ -57,4 +61,8 @@ CACHE_HOST = config_dict.get('cache_host')
 CACHE_PORT = config_dict.get('cache_port')
 CACHE_LIFETIME = int(config_dict.get('cache_lifetime') if config_dict.get('cache_lifetime') else 0)
 DEBUG = config_dict.get('debug')
-
+PARAMS = {
+    # e.g 'get_schedule_params': {'sinceModifiedTimestamp', 'includeDeletes'},
+    key: set([p.strip() for p in config_dict.get(key).split(',')])
+    for key in config_dict if key.endswith('params')
+}
