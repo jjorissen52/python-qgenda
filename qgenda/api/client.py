@@ -78,13 +78,13 @@ class QGendaClient:
         response = requests.post(login_url, data=params, headers=headers)
         return response
 
-    @pipelines.pre_execution_pipeline(pre.gzip_headers, pre.keep_authenticated, pre.prepare_odata(logger))
+    @pipelines.pre_execution_pipeline(pre.gzip_headers, pre.keep_authenticated, pre.prepare_params(logger))
     @pipelines.post_execution_pipeline(post.handle_error_response(logger))
-    def get_schedule(self, start_date=None, end_date=None, odata_kwargs=None, headers=None):
+    def get_schedule(self, start_date=None, end_date=None, odata_kwargs=None, headers=None, **extra_params):
         schedule_url = f'{self.api_url.strip("/")}/schedule'
         if not start_date:
             raise APICallError('start_date is a required argument.')
-        params = {'startDate': start_date, 'companyKey': self.company_key}
+        params = {**extra_params, 'startDate': start_date, 'companyKey': self.company_key}
         if end_date:
             params.update({"endDate": end_date})
         if odata_kwargs:
