@@ -2,7 +2,6 @@ import inspect
 import functools
 
 
-@functools.cache
 def get_default_args(func):
     signature = inspect.signature(func)
     return {
@@ -12,7 +11,6 @@ def get_default_args(func):
     }
 
 
-@functools.cache
 def get_arg_names(method):
     """
     Returns any explicitly named positional or keyword arguments defined in

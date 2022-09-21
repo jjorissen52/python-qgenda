@@ -17,10 +17,15 @@ def handle_error_response(logger):
             if raise_errors:
                 raise HTTPError(f'API Call returned HTTP error response {response.status_code}: {response.reason}')
             else:
-                setattr(response, 'text', {
+                #update the response body to identify the error and description
+                #this may cause an issue down the road if requests changes how _content works
+                modified_response = {
                     "error": response.status_code,
                     "error_description": response.reason,
-                })
+                    "unmodified": response.text,
+                }
+                response._content = json.dumps(modified_response).encode()
+                response._content_consumed = False
         else:
             response_dict = json.loads(response.text)
             if any(["error" in key for key in response_dict]) and raise_errors:
